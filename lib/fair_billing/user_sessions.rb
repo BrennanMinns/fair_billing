@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FairBilling
   class UserSessions
     def initialize(entries, min_time, max_time)
@@ -10,9 +12,9 @@ module FairBilling
       return {} if @entries.empty?
 
       @entries.group_by(&:user).transform_values do |user_entries|
-        user_entries.sort_by!(&:time_seconds)
         starts = []
         durations = []
+
         user_entries.each do |entry|
           if entry.action == 'Start'
             starts << entry.time_seconds
