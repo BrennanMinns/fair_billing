@@ -6,4 +6,4 @@
 # Be sure to run 'bundle install' first to install rspec
 
 # To run the program:
-# bin/fair_billing.rb examples/sample_log.txt
+# bin/fair_billing.rb examples/sample_file.txt
