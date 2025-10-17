@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'fair_billing'
 
 describe FairBilling::LogParser do

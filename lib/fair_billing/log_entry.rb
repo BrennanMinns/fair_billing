@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module FairBilling
   class LogEntry
     attr_reader :time_seconds, :user, :action
 
-    LINE_REGEX = /^(\d{2}:\d{2}:\d{2}) (\w+) (Start|End)$/
+    LINE_REGEX = /^(\d{2}:\d{2}:\d{2}) (\w+) (Start|End)$/.freeze
 
     def initialize(line)
       matches = line.match(LINE_REGEX)

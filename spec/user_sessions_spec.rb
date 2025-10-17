@@ -1,12 +1,13 @@
+# frozen_string_literal: true
+
 require 'fair_billing'
 
 describe FairBilling::UserSessions do
   let(:entries) do
-    [ FairBilling::LogEntry.new('14:02:03 ALICE99 Start'),
-      FairBilling::LogEntry.new('14:02:34 ALICE99 End')
-    ]
+    [FairBilling::LogEntry.new('14:02:03 ALICE99 Start'),
+     FairBilling::LogEntry.new('14:02:34 ALICE99 End')]
   end
-  
+
   let(:min_time) { 14 * 3600 + 2 * 60 + 3 }
   let(:max_time) { 14 * 3600 + 2 * 60 + 34 }
 

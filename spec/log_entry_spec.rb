@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'fair_billing'
 
-describe FairBilling::LogEntry do 
+describe FairBilling::LogEntry do
   describe '#initialize' do
     it 'parses valid line' do
       entry = FairBilling::LogEntry.new('14:02:03 ALICE99 Start')
