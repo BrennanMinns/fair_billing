@@ -7,6 +7,25 @@ module FairBilling
     end
 
     def compute_results
+      return {} if @entries.empty?
+
+      @entries.group_by(&:user).transform_values do |user_entries|
+        user_entries.sort_by!(&:time_seconds)
+        starts = []
+        durations = []
+        user_entries.each do |entry|
+          if entry.action == 'Start'
+            starts << entry.time_seconds
+          else
+            start_time = starts.pop || @min_time
+            durations << (entry.time_seconds - start_time)
+          end
+        end
+
+        durations += starts.map { |s| @max_time - s }
+
+        [durations.size, durations.sum]
+      end
     end
   end
 end
