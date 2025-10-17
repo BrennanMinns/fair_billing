@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # =-=-= Setup =-=-=
 
 # in order to make it executable, you may need to run:
