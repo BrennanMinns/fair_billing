@@ -9,16 +9,16 @@ describe FairBilling::LogParser do
   describe '#parse' do
     it 'parses valid entries' do
       parser = FairBilling::LogParser.new(file_path)
-      entries, min_time, max_time = parser.parse
-      expect(entries.size).to eq(11)
+      logs, min_time, max_time = parser.parse
+      expect(logs.size).to eq(11)
       expect(min_time).to eq(14 * 3600 + 2 * 60 + 3)
       expect(max_time).to eq(14 * 3600 + 4 * 60 + 41)
     end
 
     it 'returns empty for no valid entries' do
       parser = FairBilling::LogParser.new(empty_file_path)
-      entries, min_time, max_time = parser.parse
-      expect(entries).to eq([])
+      logs, min_time, max_time = parser.parse
+      expect(logs).to eq([])
       expect(min_time).to be_nil
       expect(max_time).to be_nil
     end

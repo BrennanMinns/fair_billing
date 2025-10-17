@@ -2,8 +2,8 @@
 
 require 'fair_billing'
 
-describe FairBilling::UserSessions do
-  let(:entries) do
+describe FairBilling::LogDuration do
+  let(:logs) do
     [FairBilling::LogEntry.new('14:02:03 ALICE99 Start'),
      FairBilling::LogEntry.new('14:02:34 ALICE99 End')]
   end
@@ -12,22 +12,22 @@ describe FairBilling::UserSessions do
   let(:max_time) { 14 * 3600 + 2 * 60 + 34 }
 
   describe '#compute_results' do
-    it 'calculates paired session' do
-      calculator = FairBilling::UserSessions.new(entries, min_time, max_time)
+    it 'calculates paired logs' do
+      calculator = FairBilling::LogDuration.new(logs, min_time, max_time)
       results = calculator.compute_results
       expect(results['ALICE99']).to eq([1, 31])
     end
 
-    it 'calculates unpaired end' do
+    it 'calculates unpaired end log' do
       entries = [FairBilling::LogEntry.new('14:02:34 ALICE99 End')]
-      calculator = FairBilling::UserSessions.new(entries, min_time, max_time)
+      calculator = FairBilling::LogDuration.new(logs, min_time, max_time)
       results = calculator.compute_results
       expect(results['ALICE99']).to eq([1, 31])
     end
 
-    it 'calculates unpaired start' do
+    it 'calculates unpaired start log' do
       entries = [FairBilling::LogEntry.new('14:02:03 ALICE99 Start')]
-      calculator = FairBilling::UserSessions.new(entries, min_time, max_time)
+      calculator = FairBilling::LogDuration.new(logs, min_time, max_time)
       results = calculator.compute_results
       expect(results['ALICE99']).to eq([1, 31])
     end
