@@ -1,35 +1,43 @@
 # frozen_string_literal: true
+require "fair_billing"
 
-require 'fair_billing'
+RSpec.describe FairBilling::LogEntry do
+  subject(:entry) { described_class.new(line) }
 
-describe FairBilling::LogEntry do
-  describe '#initialize' do
-    it 'parses valid line' do
-      log = FairBilling::LogEntry.new('14:02:03 ALICE99 Start')
-      expect(log.time_seconds).to eq(14 * 3600 + 2 * 60 + 3)
-      expect(log.user).to eq('ALICE99')
-      expect(log.action).to eq('Start')
-      expect(log.valid?).to be true
+  context "with a valid line" do
+    let(:line) { "14:02:03 ALICE99 Start" }
+
+    it "parses fields and is valid", :aggregate_failures do
+      expect(entry.time_seconds).to eq(14 * 3600 + 2 * 60 + 3)
+      expect(entry.user).to eq("ALICE99")
+      expect(entry.action).to eq("Start")
+      expect(entry.valid?).to be(true)
+    end
+  end
+
+  context "when the log is invalid" do
+    shared_examples "invalid" do
+      it { is_expected.not_to be_valid }
     end
 
-    it 'ignores invalid line' do
-      log = FairBilling::LogEntry.new('invalid')
-      expect(log.valid?).to be false
+    context "totally malformed" do
+      let(:line) { "invalid" }
+      it_behaves_like "invalid"
     end
 
-    it 'ignores invalid time' do
-      log = FairBilling::LogEntry.new('25:00:00 USER Start')
-      expect(log.valid?).to be false
+    context "invalid time" do
+      let(:line) { "25:00:00 JAMIE Start" }
+      it_behaves_like "invalid"
     end
 
-    it 'ignores invalid user' do
-      log = FairBilling::LogEntry.new('25:00:00 1 Start')
-      expect(log.valid?).to be false
+    context "invalid user" do
+      let(:line) { "14:00:00 ALICE-99 Start" }
+      it_behaves_like "invalid"
     end
 
-    it 'ignores invalid start/end' do
-      log = FairBilling::LogEntry.new('25:00:00 1 invalid')
-      expect(log.valid?).to be false
+    context "invalid action" do
+      let(:line) { "14:00:00 JAMIE Nope" }
+      it_behaves_like "invalid"
     end
   end
 end
