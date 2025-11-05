@@ -2,6 +2,8 @@
 # frozen_string_literal: true
 
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
+require "bundler/setup"
+require "debug"
 require_relative '../lib/fair_billing'
 
 if ARGV.length != 1
